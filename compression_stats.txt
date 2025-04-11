@@ -1,0 +1,3 @@
+Original Size (bytes): 62045
+Compressed Size (bytes): 35108
+Compression Rate: 43.4153 %
