@@ -41,7 +41,6 @@ int main() {
         return 1;
     }
 
-    // Step 1: Read file and calculate frequency
     unordered_map<char, int> freqMap;
     string text;
     char ch;
@@ -51,7 +50,6 @@ int main() {
     }
     inFile.close();
 
-    // Step 2: Build Huffman Tree
     priority_queue<Node*, vector<Node*>, Compare> pq;
     for (auto& pair : freqMap) {
         pq.push(new Node(pair.first, pair.second));
@@ -70,24 +68,20 @@ int main() {
 
     Node* root = pq.top();
 
-    // Step 3: Generate Huffman Codes
     unordered_map<char, string> codeMap;
     buildCodeMap(root, "", codeMap);
 
-    // Step 4: Write code map to file
     ofstream mapFile("mapping.txt");
     for (auto& pair : codeMap) {
         mapFile << (int)pair.first << " " << pair.second << "\n";
     }
     mapFile.close();
 
-    // Step 5: Encode the text
     string encodedString = "";
     for (char c : text) {
         encodedString += codeMap[c];
     }
 
-    // Step 6: Write binary string to file
     ofstream outFile("compressed.bin", ios::binary);
     int extraBits = 8 - (encodedString.size() % 8);
     if (extraBits != 8) {
@@ -96,7 +90,7 @@ int main() {
         extraBits = 0;
     }
 
-    outFile.put(extraBits); // store padding info
+    outFile.put(extraBits); 
 
     for (size_t i = 0; i < encodedString.size(); i += 8) {
         bitset<8> byte(encodedString.substr(i, 8));
